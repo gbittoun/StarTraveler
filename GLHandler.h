@@ -9,13 +9,22 @@
 
 class GLHandler : public ErrorStateBase
 {
+	GLuint program;
+    GLuint triangleVBO;
+
+    void prepareObjects();
+
+	void prepareProgram();
+
+	void compileShader(GLuint shaderObj, GLsizei count, const GLchar ** sources, GLint * length);
+
 public:
 
-	GLHandler();
+    GLHandler();
 
-	ErrorCode initGL();
+    ErrorCode initGL();
 
-	void resizeWindow(int width, int height);
+    void resizeWindow(int width, int height);
 
-	void drawGLScene();
+    void drawGLScene();
 };

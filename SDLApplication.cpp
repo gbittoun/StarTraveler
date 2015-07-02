@@ -1,3 +1,7 @@
+#include <fstream>
+#include <sstream>
+#include <vector>
+
 #include "SDLApplication.h"
 
 SDLApplication::SDLApplication(int width, int height, int bpp) :
@@ -90,11 +94,38 @@ void SDLApplication::initGL()
 	}
 }
 
+void SDLApplication::initStarData()
+{
+    std::vector<GLfloat> positions;
+    if (checkState())
+    {
+        std::fstream starFile("stars.txt", std::fstream::in);
+        std::string line;
+        while (std::getline(starFile, line))
+        {
+            std::istringstream iss(line);
+
+            float x, y, z;
+            iss >> x;
+            iss >> y;
+            iss >> z;
+
+            positions.push_back(x);
+            positions.push_back(y);
+            positions.push_back(z);
+            positions.push_back(1.0);
+        }
+    }
+
+    glHandler.setUniform("starPositions", positions);
+}
+
 ErrorStateBase::ErrorCode SDLApplication::init()
 {
     initSDL();
     initVideoInfo();
     createGLWindow();
+    initStarData();
     initGL();
 
     return errorState;

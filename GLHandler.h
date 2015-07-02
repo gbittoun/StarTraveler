@@ -3,6 +3,9 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "ErrorStateBase.h"
 
@@ -10,13 +13,12 @@
 class GLHandler : public ErrorStateBase
 {
 	GLuint program;
-    GLuint triangleVBO;
+
+    std::map<std::string, std::vector<GLfloat> > uniformMap;
 
     void prepareObjects();
 
 	void prepareProgram();
-
-	void compileShader(GLuint shaderObj, GLsizei count, const GLchar ** sources, GLint * length);
 
 public:
 
@@ -27,4 +29,6 @@ public:
     void resizeWindow(int width, int height);
 
     void drawGLScene();
+
+    void setUniform(std::string const &, std::vector<GLfloat> const &);
 };

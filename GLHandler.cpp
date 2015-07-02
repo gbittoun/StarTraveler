@@ -1,4 +1,5 @@
 #include "GLHandler.h"
+#include "ShaderLoader.h"
 
 #include <vector>
 
@@ -30,78 +31,39 @@ ErrorStateBase::ErrorCode GLHandler::initGL()
     return errorState;
 }
 
-void GLHandler::compileShader(GLuint shaderObj, GLsizei count, const GLchar ** sources, GLint * length)
-{
-    glShaderSource(shaderObj, count, sources, length);
-    glCompileShader(shaderObj);
-
-    GLint status;
-    glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
-    {
-        GLint logSize;
-        glGetShaderiv(shaderObj, GL_INFO_LOG_LENGTH, &logSize);
-
-        std::vector<char> str(logSize);
-        glGetShaderInfoLog(shaderObj, logSize, NULL, &str[0]);
-        std::cout << "Shader compilation error:" << std::endl << std::string(str.begin(), str.end()) << std::endl;
-
-        errorState = SHADER_COMPILATION_ERROR;
-    }
-}
-
 void GLHandler::prepareProgram()
 {
-    /* Assign our handles a "name" to new shader objects */
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    ShaderLoader loader = ShaderLoader();
+    loader.setShaderFile(GL_VERTEX_SHADER, "VertexStarShader.sl");
+    loader.setShaderFile(GL_FRAGMENT_SHADER, "FragmentStarShader.sl");
 
-    char vertexSource[] = "\
-#version 300 es\n\
-\n\
-void main(void)\n\
-{\n\
-gl_Position = vec4(0.0, 0.0, 0.5, 1.0);\n\
-}\n\
-";
-    const GLchar * vertexSourcePtr = vertexSource;
-    GLint vertexSourceLength = sizeof(vertexSource);
+    errorState = loader.generateProgram(program);
+}
 
-    char fragmentSource[] = "\
-#version 300 es\n\
-\n\
-out mediump vec4 color;\n\
-\n\
-void main(void)\n\
-{\n\
-color = vec4(0.0, 0.8, 1.0, 1.0);\n\
-}\n\
-";
-    const GLchar * fragmentSourcePtr = fragmentSource;
-    GLint fragmentSourceLength = sizeof(fragmentSource);
-
-    if (checkState())
-        compileShader(vertexShader, 1, &vertexSourcePtr, &vertexSourceLength);
-
-    if (checkState())
-        compileShader(fragmentShader, 1, &fragmentSourcePtr, &fragmentSourceLength);
-
-    program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
+void GLHandler::setUniform(std::string const & uniformName, std::vector<GLfloat> const & values)
+{
+    uniformMap[uniformName] = values;
 }
 
 void GLHandler::prepareObjects()
 {
-    //Create a new VBO and use the variable id to store the VBO id
-    glGenVertexArrays(1, &triangleVBO);
+    glUseProgram(program);
 
-    // //Vertices of a triangle (counter-clockwise winding)
-    // float data[] = {1.0, 0.0, -0.5, 1.0};
+    for (auto uniform : uniformMap)
+    {
+        GLint location = glGetUniformLocation(program, (GLchar*)uniform.first.c_str());
+        if (location < 0)
+        {
+            std::cout << "Couldn’t retrieve location for uniform " << uniform.first << std::endl;
+            continue;
+        }
 
-    // //Upload vertex data to the video device
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+        glUniform4fv(location, 4096, &uniform.second[0]);
+        if (GL_INVALID_OPERATION == glGetError())
+        {
+            std::cout << "An error occured while setting values for uniform " << uniform.first << std::endl;
+        }
+    }
 }
 
 void GLHandler::resizeWindow(int width, int height)
@@ -114,11 +76,8 @@ void GLHandler::drawGLScene()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    //Make the new VBO active
-    glBindVertexArray(triangleVBO);
-
     glUseProgram(program);
 
     //Actually draw the triangle, giving the number of vertices provided
-    glDrawArrays(GL_POINTS, 0, 1);
+    glDrawArrays(GL_POINTS, 0, 4096);
 }

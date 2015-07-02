@@ -36,5 +36,7 @@ private:
 
 	void initGL();
 
+	void initStarData();
+
 	void handleKeyPress(SDL_keysym *keysym);
 };

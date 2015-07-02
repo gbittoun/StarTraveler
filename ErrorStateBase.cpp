@@ -9,7 +9,7 @@ ErrorStateBase::~ErrorStateBase()
 {
 }
 
-bool ErrorStateBase::checkState()
+bool ErrorStateBase::checkState() const
 {
 	return errorState == SUCCESS;
 }

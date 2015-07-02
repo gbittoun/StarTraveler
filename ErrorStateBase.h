@@ -17,7 +17,7 @@ public:
 	ErrorStateBase();
 	virtual ~ErrorStateBase();
 
-	bool checkState();
+	bool checkState() const;
 
 protected:
 

@@ -105,7 +105,7 @@ void SDLApplication::initStarData()
         {
             std::istringstream iss(line);
 
-            float x, y, z;
+            float x = 0, y = 0, z = 0.5;
             iss >> x;
             iss >> y;
             iss >> z;
@@ -113,11 +113,10 @@ void SDLApplication::initStarData()
             positions.push_back(x);
             positions.push_back(y);
             positions.push_back(z);
-            positions.push_back(1.0);
         }
     }
 
-    glHandler.setUniform("starPositions", positions);
+    glHandler.setVertexBuffer(positions);
 }
 
 ErrorStateBase::ErrorCode SDLApplication::init()

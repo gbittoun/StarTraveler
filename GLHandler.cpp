@@ -45,6 +45,11 @@ void GLHandler::setUniform(std::string const & uniformName, std::vector<GLfloat>
     uniformMap[uniformName] = values;
 }
 
+void GLHandler::setVertexBuffer(std::vector<GLfloat> const & vertexBufferData)
+{
+    this->vertexBufferData = vertexBufferData;
+}
+
 void GLHandler::prepareObjects()
 {
     glUseProgram(program);
@@ -64,6 +69,19 @@ void GLHandler::prepareObjects()
             std::cout << "An error occured while setting values for uniform " << uniform.first << std::endl;
         }
     }
+
+    GLint starLocation = glGetAttribLocation(program, "star");
+
+    glGenVertexArrays(1, &vertexArray);
+    glBindVertexArray(vertexArray);
+
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vertexBufferData.size(), &vertexBufferData[0], GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(starLocation);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
 }
 
 void GLHandler::resizeWindow(int width, int height)
@@ -78,6 +96,7 @@ void GLHandler::drawGLScene()
 
     glUseProgram(program);
 
-    //Actually draw the triangle, giving the number of vertices provided
-    glDrawArrays(GL_POINTS, 0, 4096);
+    glBindVertexArray(vertexArray);
+
+    glDrawArrays(GL_POINTS, 0, vertexBufferData.size() / 3);
 }

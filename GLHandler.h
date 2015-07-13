@@ -13,8 +13,11 @@
 class GLHandler : public ErrorStateBase
 {
 	GLuint program;
+    GLuint vertexBuffer;
+    GLuint vertexArray;
 
     std::map<std::string, std::vector<GLfloat> > uniformMap;
+    std::vector<GLfloat> vertexBufferData;
 
     void prepareObjects();
 
@@ -31,4 +34,6 @@ public:
     void drawGLScene();
 
     void setUniform(std::string const &, std::vector<GLfloat> const &);
+
+    void setVertexBuffer(std::vector<GLfloat> const &);
 };

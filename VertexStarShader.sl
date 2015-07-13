@@ -1,10 +1,9 @@
 #version 300 es
 
-uniform vec4 starPositions[4096];
+in vec3 star;
 
 void main(void)
 {
-    vec4 position = starPositions[gl_VertexID];
-    position.xyz /= 10000.0;
-    gl_Position = position;
+    gl_Position.xyz = star / 10.0;
+    gl_Position.w = 1.0;
 }

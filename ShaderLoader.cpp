@@ -8,10 +8,6 @@
 #include "ShaderLoader.h"
 
 
-ShaderLoader::ShaderLoader()
-{
-}
-
 void ShaderLoader::setShaderFile(GLenum shaderType, std::string filename)
 {
     std::ifstream t(filename, std::ios::in);
@@ -67,6 +63,9 @@ ErrorStateBase::ErrorCode ShaderLoader::generateProgram(GLuint & program)
         glAttachShader(program, fragmentShader);
         glLinkProgram(program);
     }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     return errorState;
 }

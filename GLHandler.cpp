@@ -11,6 +11,9 @@ GLHandler::GLHandler() :
 
 GLHandler::~GLHandler()
 {
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteVertexArrays(1, &vertexArray);
+    glDeleteProgram(program);
 }
 
 /* general OpenGL initialization function */

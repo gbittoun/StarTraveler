@@ -13,14 +13,7 @@ class ShaderLoader: public ErrorStateBase
 
     void compileShader(GLuint shaderObj, GLsizei count, const GLchar ** sources, GLint * length);
 
-    // forbidding copy and assignation
-    ShaderLoader(ShaderLoader const &);
-    ShaderLoader & operator=(ShaderLoader const &);
-
 public:
-
-    ShaderLoader();
-    ~ShaderLoader();
 
     void setShaderFile(GLenum shaderType, std::string filename);
     ErrorCode generateProgram(GLuint &);

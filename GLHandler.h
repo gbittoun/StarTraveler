@@ -23,9 +23,14 @@ class GLHandler : public ErrorStateBase
 
 	void prepareProgram();
 
+    // forbidding copy and assignation
+    GLHandler(GLHandler const &);
+    GLHandler & operator=(GLHandler const &);
+
 public:
 
     GLHandler();
+    ~GLHandler();
 
     ErrorCode initGL();
 

@@ -9,6 +9,10 @@ GLHandler::GLHandler() :
 {
 }
 
+GLHandler::~GLHandler()
+{
+}
+
 /* general OpenGL initialization function */
 ErrorStateBase::ErrorCode GLHandler::initGL()
 {
@@ -33,7 +37,7 @@ ErrorStateBase::ErrorCode GLHandler::initGL()
 
 void GLHandler::prepareProgram()
 {
-    ShaderLoader loader = ShaderLoader();
+    ShaderLoader loader;
     loader.setShaderFile(GL_VERTEX_SHADER, "VertexStarShader.sl");
     loader.setShaderFile(GL_FRAGMENT_SHADER, "FragmentStarShader.sl");
 
@@ -82,6 +86,11 @@ void GLHandler::prepareObjects()
 
     glEnableVertexAttribArray(starLocation);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
+
+    glEnable(GL_PROGRAM_POINT_SIZE);
+    glEnable(GL_POINT_SPRITE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GLHandler::resizeWindow(int width, int height)

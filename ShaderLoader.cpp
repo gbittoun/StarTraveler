@@ -8,6 +8,10 @@
 #include "ShaderLoader.h"
 
 
+ShaderLoader::ShaderLoader()
+{
+}
+
 void ShaderLoader::setShaderFile(GLenum shaderType, std::string filename)
 {
     std::ifstream t(filename, std::ios::in);

@@ -1,5 +1,5 @@
 PROJECT=ShaderExamples
-SOURCES=ErrorStateBase.cpp  GLHandler.cpp  main.cpp  SDLApplication.cpp ShaderLoader.cpp
+SOURCES=ErrorStateBase.cpp  GLHandler.cpp  main.cpp  SDLApplication.cpp ShaderLoader.cpp StarField.cpp
 LDFLAGS=-lSDL -lGL -lGLEW -lGLU
 CFLAGS=-std=c++11 -c -Wall -D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL
 CC=g++

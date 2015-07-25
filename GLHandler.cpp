@@ -52,9 +52,9 @@ void GLHandler::setUniform(std::string const & uniformName, std::vector<GLfloat>
     uniformMap[uniformName] = values;
 }
 
-void GLHandler::setVertexBuffer(std::vector<GLfloat> const & vertexBufferData)
+void GLHandler::setStarField(std::vector<Star> const & starField)
 {
-    this->vertexBufferData = vertexBufferData;
+    this->starField = starField;
 }
 
 void GLHandler::prepareObjects()
@@ -77,7 +77,12 @@ void GLHandler::prepareObjects()
         }
     }
 
+    GLint nbAttributes;
+    glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &nbAttributes);
+
     GLint starLocation = glGetAttribLocation(program, "star");
+    GLint magnitudeLocation = glGetAttribLocation(program, "magnitude");
+    GLint colorLocation = glGetAttribLocation(program, "input_color");
 
     glGenVertexArrays(1, &vertexArray);
     glBindVertexArray(vertexArray);
@@ -85,10 +90,16 @@ void GLHandler::prepareObjects()
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vertexBufferData.size(), &vertexBufferData[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Star)*starField.size(), &starField[0], GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(starLocation);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), 0);
+    glVertexAttribPointer(starLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, position));
+
+    glEnableVertexAttribArray(magnitudeLocation);
+    glVertexAttribPointer(magnitudeLocation, 1, GL_FLOAT, GL_FALSE, sizeof(Star), (void*)offsetof(Star, magnitude));
+
+    glEnableVertexAttribArray(colorLocation);
+    glVertexAttribPointer(colorLocation, 3, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Star), (void*)offsetof(Star, color));
 
     glEnable(GL_PROGRAM_POINT_SIZE);
     glEnable(GL_POINT_SPRITE);
@@ -110,5 +121,5 @@ void GLHandler::drawGLScene()
 
     glBindVertexArray(vertexArray);
 
-    glDrawArrays(GL_POINTS, 0, vertexBufferData.size() / 3);
+    glDrawArrays(GL_POINTS, 0, starField.size());
 }

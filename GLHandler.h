@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "ErrorStateBase.h"
+#include "StarField.h"
 
 
 class GLHandler : public ErrorStateBase
@@ -17,7 +18,7 @@ class GLHandler : public ErrorStateBase
     GLuint vertexArray;
 
     std::map<std::string, std::vector<GLfloat> > uniformMap;
-    std::vector<GLfloat> vertexBufferData;
+    std::vector<Star> starField;
 
     void prepareObjects();
 
@@ -40,5 +41,5 @@ public:
 
     void setUniform(std::string const &, std::vector<GLfloat> const &);
 
-    void setVertexBuffer(std::vector<GLfloat> const &);
+    void setStarField(std::vector<Star> const &);
 };

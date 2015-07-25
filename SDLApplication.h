@@ -5,6 +5,8 @@
 
 #include "ErrorStateBase.h"
 #include "GLHandler.h"
+#include "StarField.h"
+
 
 class SDLApplication : public ErrorStateBase
 {

@@ -1,8 +1,7 @@
-#include <fstream>
-#include <sstream>
 #include <vector>
 
 #include "SDLApplication.h"
+#include "StarField.h"
 
 SDLApplication::SDLApplication(int width, int height, int bpp) :
 	ErrorStateBase(),
@@ -96,27 +95,7 @@ void SDLApplication::initGL()
 
 void SDLApplication::initStarData()
 {
-    std::vector<GLfloat> positions;
-    if (checkState())
-    {
-        std::fstream starFile("stars.txt", std::fstream::in);
-        std::string line;
-        while (std::getline(starFile, line))
-        {
-            std::istringstream iss(line);
-
-            float x = 0, y = 0, z = 0.5;
-            iss >> x;
-            iss >> y;
-            iss >> z;
-
-            positions.push_back(x);
-            positions.push_back(y);
-            positions.push_back(z);
-        }
-    }
-
-    glHandler.setVertexBuffer(positions);
+    glHandler.setStarField(StarFieldBuilder().fromFile("stars.txt"));
 }
 
 ErrorStateBase::ErrorCode SDLApplication::init()

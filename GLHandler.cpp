@@ -61,6 +61,14 @@ void GLHandler::prepareObjects()
 {
     glUseProgram(program);
 
+    // Set transformation matrix
+    for (int i = 0 ; i < 4 ; ++i)
+        for (int j = 0 ; j < 4 ; ++j)
+            if (i == j)
+                uniformMap["transformation_matrix"].push_back(1);
+            else
+                uniformMap["transformation_matrix"].push_back(0);
+
     for (auto uniform : uniformMap)
     {
         GLint location = glGetUniformLocation(program, (GLchar*)uniform.first.c_str());
@@ -70,7 +78,7 @@ void GLHandler::prepareObjects()
             continue;
         }
 
-        glUniform4fv(location, 4096, &uniform.second[0]);
+        glUniformMatrix4fv(location, 1, GL_FALSE, &uniform.second[0]);
         if (GL_INVALID_OPERATION == glGetError())
         {
             std::cout << "An error occured while setting values for uniform " << uniform.first << std::endl;

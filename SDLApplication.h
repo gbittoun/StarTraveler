@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SDL.h>
 
+#include "Camera.h"
 #include "ErrorStateBase.h"
 #include "GLHandler.h"
 #include "StarField.h"
@@ -19,7 +20,7 @@ public:
 
 	void mainLoop();
 
-	GLHandler & getGLHandler() const; 
+	GLHandler & getGLHandler() const;
 
 private:
 
@@ -29,6 +30,7 @@ private:
 	GLHandler glHandler;
 	bool keepRunning;
 	int videoFlags;
+	Camera camera;
 
 	void initSDL();
 
@@ -41,4 +43,6 @@ private:
 	void initStarData();
 
 	void handleKeyPress(SDL_keysym *keysym);
+
+    void handleMouseMotion(SDL_MouseMotionEvent);
 };

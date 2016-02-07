@@ -51,10 +51,16 @@ ErrorStateBase::ErrorCode ShaderLoader::generateProgram(GLuint & program)
     GLint fragmentSourceLength = fragmentShaderSource.size();
 
     if (checkState())
+    {
+        std::cout << "Compiling vertex shader" << std::endl;
         compileShader(vertexShader, 1, &vertexSourcePtr, &vertexSourceLength);
+    }
 
     if (checkState())
+    {
+        std::cout << "Compiling fragment shader" << std::endl;
         compileShader(fragmentShader, 1, &fragmentSourcePtr, &fragmentSourceLength);
+    }
 
     if (checkState())
     {

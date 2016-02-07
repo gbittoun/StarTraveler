@@ -128,9 +128,28 @@ void SDLApplication::handleKeyPress(SDL_keysym *keysym)
     }
 }
 
+void SDLApplication::handleMouseMotion(SDL_MouseMotionEvent event)
+{
+    int x, y;
+    int buttons_state = SDL_GetMouseState(&x, &y);
+    std::cout << "Mouse state: " << buttons_state;
+    std::cout << " relative positions: " << event.xrel << ", " << event.yrel << std::endl;
+
+    if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT) && buttons_state & SDL_BUTTON(SDL_BUTTON_RIGHT))
+    {
+    }
+    if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT))
+    {
+    }
+    else if (buttons_state & SDL_BUTTON(SDL_BUTTON_RIGHT))
+    {
+    }
+}
+
+
 void SDLApplication::mainLoop()
 {
-    /* wait for events */ 
+    /* wait for events */
     while (keepRunning)
     {
     	if (!checkState())
@@ -148,10 +167,10 @@ void SDLApplication::mainLoop()
             {
             case SDL_ACTIVEEVENT:
                 /* Something's happend with our focus */
-                break;              
+                break;
             case SDL_VIDEORESIZE:
                 /* handle resize event */
-                surface = SDL_SetVideoMode( event.resize.w,
+                surface = SDL_SetVideoMode(event.resize.w,
                             event.resize.h,
                             16, videoFlags);
                 if ( !surface )
@@ -165,6 +184,9 @@ void SDLApplication::mainLoop()
             case SDL_KEYDOWN:
                 /* handle key presses */
                 handleKeyPress(&event.key.keysym);
+                break;
+            case SDL_MOUSEMOTION:
+                handleMouseMotion(event.motion);
                 break;
             case SDL_QUIT:
                 /* handle quit requests */

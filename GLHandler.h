@@ -42,4 +42,6 @@ public:
     void setUniform(std::string const &, std::vector<GLfloat> const &);
 
     void setStarField(std::vector<Star> const &);
+
+    void rotatePOV();
 };

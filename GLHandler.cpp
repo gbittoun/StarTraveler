@@ -5,7 +5,7 @@
 
 
 GLHandler::GLHandler() :
-	ErrorStateBase()
+    ErrorStateBase()
 {
 }
 

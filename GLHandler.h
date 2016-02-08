@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "Camera.h"
 #include "ErrorStateBase.h"
 #include "StarField.h"
 
@@ -19,10 +20,13 @@ class GLHandler : public ErrorStateBase
 
     std::map<std::string, std::vector<GLfloat> > uniformMap;
     std::vector<Star> starField;
+    Camera * cameraPtr;
 
     void prepareObjects();
 
 	void prepareProgram();
+
+    void updateShaderCamera();
 
     // forbidding copy and assignation
     GLHandler(GLHandler const &);
@@ -39,9 +43,7 @@ public:
 
     void drawGLScene();
 
-    void setUniform(std::string const &, std::vector<GLfloat> const &);
+    void setCamera(Camera * cameraPtr);
 
     void setStarField(std::vector<Star> const &);
-
-    void rotatePOV();
 };

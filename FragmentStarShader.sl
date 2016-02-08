@@ -8,5 +8,5 @@ void main(void)
 {
     mediump float sqrDist = (gl_PointCoord.s - 0.5) * (gl_PointCoord.s - 0.5) + (gl_PointCoord.t - 0.5) * (gl_PointCoord.t - 0.5);
     color.xyz = vs_color.xyz;
-    color.w = exp(-100.0*sqrDist);
+    color.w = exp(-20.0*sqrDist);
 }

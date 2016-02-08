@@ -1,20 +1,21 @@
 #pragma once
 
+#include "Vector3.h"
 #include "Quaternion.h"
 
 
 class Camera
 {
-    float p[3];
+    Vector3 p;
     Quaternion q;
 
 public:
 
     Camera();
 
-    void getPosition(float[3]);
+    Vector3 getPosition() const;
 
-    Quaternion getOrientation();
+    Quaternion getOrientation() const;
 
     void updateOrientationXY(float x, float y);
 

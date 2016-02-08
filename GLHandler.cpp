@@ -5,7 +5,13 @@
 
 
 GLHandler::GLHandler() :
-    ErrorStateBase()
+    ErrorStateBase(),
+    program(0),
+    vertexBuffer(0),
+    vertexArray(0),
+    uniformMap(),
+    starField(),
+    cameraPtr(0)
 {
 }
 
@@ -26,9 +32,6 @@ ErrorStateBase::ErrorCode GLHandler::initGL()
         errorState = GLEW_INIT_FAILED;
     }
 
-    /* Set the background black */
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-
     if (checkState())
         prepareProgram();
 
@@ -47,11 +50,6 @@ void GLHandler::prepareProgram()
     errorState = loader.generateProgram(program);
 }
 
-void GLHandler::setUniform(std::string const & uniformName, std::vector<GLfloat> const & values)
-{
-    uniformMap[uniformName] = values;
-}
-
 void GLHandler::setStarField(std::vector<Star> const & starField)
 {
     this->starField = starField;
@@ -60,14 +58,6 @@ void GLHandler::setStarField(std::vector<Star> const & starField)
 void GLHandler::prepareObjects()
 {
     glUseProgram(program);
-
-    // Set transformation matrix
-    for (int i = 0 ; i < 4 ; ++i)
-        for (int j = 0 ; j < 4 ; ++j)
-            if (i == j)
-                uniformMap["transformation_matrix"].push_back(1);
-            else
-                uniformMap["transformation_matrix"].push_back(0);
 
     for (auto uniform : uniformMap)
     {
@@ -113,6 +103,7 @@ void GLHandler::prepareObjects()
     glEnable(GL_POINT_SPRITE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 }
 
 void GLHandler::resizeWindow(int width, int height)
@@ -126,8 +117,25 @@ void GLHandler::drawGLScene()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     glUseProgram(program);
+    updateShaderCamera();
 
     glBindVertexArray(vertexArray);
 
     glDrawArrays(GL_POINTS, 0, starField.size());
+}
+
+void GLHandler::setCamera(Camera * cameraPtr)
+{
+    this->cameraPtr = cameraPtr;
+}
+
+void GLHandler::updateShaderCamera()
+{
+    GLint location;
+
+    location = glGetUniformLocation(program, "camera_position");
+    glUniform3f(location, cameraPtr->getPosition().x, cameraPtr->getPosition().y, cameraPtr->getPosition().z);
+
+    location = glGetUniformLocation(program, "camera_orientation");
+    glUniform4f(location, cameraPtr->getOrientation().x, cameraPtr->getOrientation().y, cameraPtr->getOrientation().z, cameraPtr->getOrientation().w);
 }

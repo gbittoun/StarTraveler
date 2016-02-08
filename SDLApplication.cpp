@@ -1,3 +1,4 @@
+#include <cstring>
 #include <vector>
 
 #include "SDLApplication.h"
@@ -14,6 +15,7 @@ SDLApplication::SDLApplication(int width, int height, int bpp) :
 	keepRunning(true),
 	videoFlags()
 {
+    glHandler.setCamera(&this->camera);
 }
 
 SDLApplication::~SDLApplication()
@@ -132,17 +134,18 @@ void SDLApplication::handleMouseMotion(SDL_MouseMotionEvent event)
 {
     int x, y;
     int buttons_state = SDL_GetMouseState(&x, &y);
-    std::cout << "Mouse state: " << buttons_state;
-    std::cout << " relative positions: " << event.xrel << ", " << event.yrel << std::endl;
 
     if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT) && buttons_state & SDL_BUTTON(SDL_BUTTON_RIGHT))
     {
+        // TODO: modify frustrum for zoom
     }
     if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT))
     {
+        camera.updateOrientationXY(event.yrel * 0.001, event.xrel * 0.001);
     }
     else if (buttons_state & SDL_BUTTON(SDL_BUTTON_RIGHT))
     {
+        camera.updatePositionFromDelta(event.yrel * 0.1);
     }
 }
 
@@ -161,6 +164,7 @@ void SDLApplication::mainLoop()
 
         /* handle the events in the queue */
     	SDL_Event event;
+        std::memset(&event, 0, sizeof(event));
         while (SDL_PollEvent(&event))
         {
             switch(event.type)

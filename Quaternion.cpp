@@ -11,6 +11,21 @@ Quaternion::Quaternion(float w, float x, float y, float z) :
 {
 }
 
+Quaternion Quaternion::operator+(Quaternion const & other)
+{
+    return Quaternion(this->w + other.w, this->x + other.x, this->y + other.y, this->z + other.z);
+}
+
+Quaternion Quaternion::operator*(float k)
+{
+    return Quaternion(this->w * k, this->x * k, this->y * k, this->z * k);
+}
+
+Quaternion operator*(float k, Quaternion q)
+{
+    return q * k;
+}
+
 Quaternion Quaternion::operator*(Quaternion const & other)
 {
     return Quaternion(
@@ -30,4 +45,11 @@ Quaternion Quaternion::normalize()
 {
     float norm = std::sqrt(w * w + x * x + y * y + z * z);
     return Quaternion(w / norm, x / norm, y / norm, z / norm);
+}
+
+std::ostream & operator<<(std::ostream & os, Quaternion q)
+{
+    os << "Quaternion{" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << "}";
+
+    return os;
 }

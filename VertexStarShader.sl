@@ -68,7 +68,7 @@ vec3 apply_frustum(vec3 position)
 
 float get_apparent_magnitude(float magnitude, vec3 position)
 {
-    return magnitude - 5.0 + log(distance(position, vec3(0.0)));
+    return 5.0 * log(distance(position, vec3(0.0)) * 0.30659458) / log(10.0) + magnitude;
 }
 
 float get_point_size_from_apparent_magnitude(float magnitude)
@@ -79,12 +79,15 @@ float get_point_size_from_apparent_magnitude(float magnitude)
 void main(void)
 {
     vec3 position = star;
-    position.z = -position.z; // right-hand referential
 
     position = position - camera_position;
     position = rotate(position, camera_orientation);
 
-    gl_PointSize = get_point_size_from_apparent_magnitude(get_apparent_magnitude(magnitude, position));
+    float apparent_magnitude = get_apparent_magnitude(magnitude, position);
+
+    gl_PointSize = 20.0 / (1.0 + exp(1.0 * (apparent_magnitude - 9.0)));
+    if (gl_PointSize < 5.0)
+        gl_PointSize = 0.0;
 
     position = apply_frustum(position);
 

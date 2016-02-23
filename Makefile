@@ -1,9 +1,9 @@
 PROJECT=ShaderExamples
 TEST_PROJECT=ShaderExamples_test
-SOURCES=Camera.cpp  ErrorStateBase.cpp  GLHandler.cpp  main.cpp  Quaternion.cpp  SDLApplication.cpp  ShaderLoader.cpp  StarField.cpp
+SOURCES=Camera.cpp  ErrorStateBase.cpp  GLHandler.cpp  main.cpp  OptionsParser.cpp  Quaternion.cpp  SDLApplication.cpp  ShaderLoader.cpp  StarField.cpp  Vector3.cpp
 TEST_SOURCES=tests/Camera.cpp tests/Quaternion.cpp
 LDFLAGS=-lSDL -lGL -lGLEW -lGLU -lm -lstdc++
-DEBUG_CFLAGS=-g -std=c++11 -c -Wall -D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL
+DEBUG_CFLAGS=-g -std=c++11 -c -Wall -Werror -D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL
 CC=g++
 
 # Automatic generation of some important lists

@@ -13,7 +13,7 @@ class SDLApplication : public ErrorStateBase
 {
 public:
 
-	SDLApplication(int width, int height, int bpp);
+	SDLApplication(int width, int height, std::string fileName);
 	~SDLApplication();
 
 	ErrorStateBase::ErrorCode init();
@@ -26,7 +26,8 @@ private:
 
 	const SDL_VideoInfo *videoInfo;
 	SDL_Surface *surface;
-	const int width, height, bpp;
+	const int width, height;
+	std::string fileName;
 	GLHandler glHandler;
 	bool keepRunning;
 	int videoFlags;

@@ -4,13 +4,13 @@
 #include "SDLApplication.h"
 #include "StarField.h"
 
-SDLApplication::SDLApplication(int width, int height, int bpp) :
+SDLApplication::SDLApplication(int width, int height, std::string fileName) :
 	ErrorStateBase(),
 	videoInfo(0),
 	surface(0),
 	width(width),
 	height(height),
-	bpp(bpp),
+    fileName(fileName),
 	glHandler(),
 	keepRunning(true),
 	videoFlags()
@@ -75,7 +75,7 @@ void SDLApplication::createGLWindow()
 	    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	    /* get a SDL surface */
-	    surface = SDL_SetVideoMode(width, height, bpp, videoFlags);
+	    surface = SDL_SetVideoMode(width, height, 0, videoFlags);
 
 	    /* Verify there is a surface */
 	    if (!surface)
@@ -97,7 +97,7 @@ void SDLApplication::initGL()
 
 void SDLApplication::initStarData()
 {
-    glHandler.setStarField(StarFieldBuilder().fromFile("stars.txt"));
+    glHandler.setStarField(StarFieldBuilder().fromFile(fileName));
 }
 
 ErrorStateBase::ErrorCode SDLApplication::init()

@@ -14,7 +14,7 @@ uniform vec4 camera_orientation;
 
 // Perspective vars
 const float angle = 2.0; //2.5
-const float near = 0.01;
+const float near = 0.000001;
 const float far = 1000000.0;
 
 vec4 quat_mult(vec4 q1, vec4 q2)

@@ -71,11 +71,6 @@ float get_apparent_magnitude(float magnitude, vec3 position)
     return 5.0 * log(distance(position, vec3(0.0)) * 0.30659458) / log(10.0) + magnitude;
 }
 
-float get_point_size_from_apparent_magnitude(float magnitude)
-{
-    return max((20.0 - 20.0 * magnitude / 1.0) / 5.0, 0.0);
-}
-
 void main(void)
 {
     vec3 position = star;
@@ -85,7 +80,7 @@ void main(void)
 
     float apparent_magnitude = get_apparent_magnitude(magnitude, position);
 
-    gl_PointSize = 20.0 / (1.0 + exp(1.0 * (apparent_magnitude - 9.0)));
+    gl_PointSize = 20.0 / (1.0 + exp(1.0 * (apparent_magnitude - 9.0)));  // Sigmoid is the best way to compute stars diameter
 
     position = apply_frustum(position);
 

@@ -11,9 +11,9 @@ out mediump vec4 vs_color;
 // Uniforms
 uniform vec3 camera_position;
 uniform vec4 camera_orientation;
+uniform float camera_fov;
 
 // Perspective vars
-const float angle = 2.0; //2.5
 const float near = 0.000001;
 const float far = 1000000.0;
 
@@ -57,8 +57,8 @@ vec3 apply_frustum(vec3 position)
 
     result.z = a * result.z + b;
 
-    a = ((far - near) * cos(angle));
-    b = near * cos(angle) + a;
+    a = ((far - near) * cos(camera_fov / 2.0));
+    b = near * cos(camera_fov / 2.0) + a;
 
     result.x = result.x / (a * result.z + b);
     result.y = result.y / (a * result.z + b);
@@ -86,8 +86,6 @@ void main(void)
     float apparent_magnitude = get_apparent_magnitude(magnitude, position);
 
     gl_PointSize = 20.0 / (1.0 + exp(1.0 * (apparent_magnitude - 9.0)));
-    if (gl_PointSize < 5.0)
-        gl_PointSize = 0.0;
 
     position = apply_frustum(position);
 

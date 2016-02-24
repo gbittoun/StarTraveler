@@ -7,7 +7,8 @@
 
 Camera::Camera() :
     p{0, 0, 0},
-    q{1, 0, 0, 0}
+    q{1, 0, 0, 0},
+    fov(2.5)
 {
 }
 
@@ -19,6 +20,11 @@ Vector3 Camera::getPosition() const
 Quaternion Camera::getOrientation() const
 {
     return this->q;
+}
+
+float Camera::getFOV() const
+{
+    return this->fov;
 }
 
 void Camera::updateOrientationXY(float x, float y)
@@ -52,4 +58,9 @@ void Camera::updatePositionFromDelta(float delta)
     this->p.x += delta * ahead.x;
     this->p.y += delta * ahead.y;
     this->p.z += delta * ahead.z;
+}
+
+void Camera::updateFOV(float delta)
+{
+    fov = std::atan(std::tan(fov - M_PI_2) + delta) + M_PI_2;
 }

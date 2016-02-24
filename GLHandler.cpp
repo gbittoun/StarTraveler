@@ -138,4 +138,7 @@ void GLHandler::updateShaderCamera()
 
     location = glGetUniformLocation(program, "camera_orientation");
     glUniform4f(location, cameraPtr->getOrientation().x, cameraPtr->getOrientation().y, cameraPtr->getOrientation().z, cameraPtr->getOrientation().w);
+
+    location = glGetUniformLocation(program, "camera_fov");
+    glUniform1f(location, cameraPtr->getFOV());
 }

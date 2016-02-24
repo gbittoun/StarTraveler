@@ -137,9 +137,9 @@ void SDLApplication::handleMouseMotion(SDL_MouseMotionEvent event)
 
     if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT) && buttons_state & SDL_BUTTON(SDL_BUTTON_RIGHT))
     {
-        // TODO: modify frustrum for zoom
+        camera.updateFOV(event.yrel * 0.1);
     }
-    if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT))
+    else if (buttons_state & SDL_BUTTON(SDL_BUTTON_LEFT))
     {
         camera.updateOrientationXY(event.yrel * 0.001, event.xrel * 0.001);
     }

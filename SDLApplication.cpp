@@ -11,11 +11,10 @@ SDLApplication::SDLApplication(int width, int height, std::string fileName) :
 	width(width),
 	height(height),
     fileName(fileName),
-	glHandler(),
+	glHandler(this->camera),
 	keepRunning(true),
 	videoFlags()
 {
-    glHandler.setCamera(&this->camera);
 }
 
 SDLApplication::~SDLApplication()

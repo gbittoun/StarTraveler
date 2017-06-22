@@ -20,7 +20,7 @@ class GLHandler : public ErrorStateBase
 
     std::map<std::string, std::vector<GLfloat> > uniformMap;
     std::vector<Star> starField;
-    Camera * cameraPtr;
+    Camera const & camera;
 
     void prepareObjects();
 
@@ -34,7 +34,7 @@ class GLHandler : public ErrorStateBase
 
 public:
 
-    GLHandler();
+    GLHandler(Camera const &);
     ~GLHandler();
 
     ErrorCode initGL();
@@ -42,8 +42,6 @@ public:
     void resizeWindow(int width, int height);
 
     void drawGLScene();
-
-    void setCamera(Camera * cameraPtr);
 
     void setStarField(std::vector<Star> const &);
 };

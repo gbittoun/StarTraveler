@@ -4,14 +4,14 @@
 #include <vector>
 
 
-GLHandler::GLHandler() :
+GLHandler::GLHandler(Camera const & camera) :
     ErrorStateBase(),
     program(0),
     vertexBuffer(0),
     vertexArray(0),
     uniformMap(),
     starField(),
-    cameraPtr(0)
+    camera(camera)
 {
 }
 
@@ -124,21 +124,16 @@ void GLHandler::drawGLScene()
     glDrawArrays(GL_POINTS, 0, starField.size());
 }
 
-void GLHandler::setCamera(Camera * cameraPtr)
-{
-    this->cameraPtr = cameraPtr;
-}
-
 void GLHandler::updateShaderCamera()
 {
     GLint location;
 
     location = glGetUniformLocation(program, "camera_position");
-    glUniform3f(location, cameraPtr->getPosition().x, cameraPtr->getPosition().y, cameraPtr->getPosition().z);
+    glUniform3f(location, camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 
     location = glGetUniformLocation(program, "camera_orientation");
-    glUniform4f(location, cameraPtr->getOrientation().x, cameraPtr->getOrientation().y, cameraPtr->getOrientation().z, cameraPtr->getOrientation().w);
+    glUniform4f(location, camera.getOrientation().x, camera.getOrientation().y, camera.getOrientation().z, camera.getOrientation().w);
 
     location = glGetUniformLocation(program, "camera_fov");
-    glUniform1f(location, cameraPtr->getFOV());
+    glUniform1f(location, camera.getFOV());
 }

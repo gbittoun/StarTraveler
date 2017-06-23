@@ -19,3 +19,7 @@ target_link_libraries(${PROJECT_NAME}
                       ${GLEW_LIBRARIES}
                       ${OPENGL_LIBRARIES}
 )
+
+configure_file(VertexStarShader.sl VertexStarShader.sl COPYONLY)
+configure_file(FragmentStarShader.sl FragmentStarShader.sl COPYONLY)
+configure_file(stars.txt stars.txt COPYONLY)
